@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package models;
+import javax.swing.JOptionPane;
+
 import sax.DBConnection;
 /**
  *
@@ -11,7 +13,7 @@ import sax.DBConnection;
  */
 public class ModelClientes {
     private DBConnection conection = new DBConnection(3306,"localhost", "acme", "root", "");
-    public int id;
+    public String  id;
     private String nombre;
     private String apMat;
     private String apPat;
@@ -200,13 +202,13 @@ public class ModelClientes {
     }
     
     public void initValues(){
-        conection.executeQuery("SELECT * FROM clientes;");
+        conection.executeQuery("SELECT * FROM cliente;");
         conection.moveNext();
         setValues();
     }
     
     public void setValues(){
-        this.id = conection.getInteger("id_cliente");
+        
         this.nombre = conection.getString("nombre");
         this.apMat = conection.getString("apellido_mat");
         this.apPat = conection.getString("apellido_pat");
@@ -219,4 +221,24 @@ public class ModelClientes {
         this.ciudad = conection.getString("ciudad");
         this.estado = conection.getString("Estado");
     }
+    
+    
+    public String guardarSql(){
+        id = JOptionPane.showInputDialog("Dame la id del cliente","");
+        String sql = "insert into cliente(id_cliente,nombre,apellido_pat,apellido_mat,telefono,email,rfc,calle,no,colonia,ciudadad,Estado) values ('"+id+"','"+nombre+"','"+apMat+"','"+apPat+"','"+telefono+"','"+email+"','"+rfc+"','"+calle+"','"+numero+"','"+colonia+"','"+ciudad+"','"+estado+"');";
+        return sql;
+    }
+    
+    public String borrarSql(){
+        id = JOptionPane.showInputDialog("Dame la id del cliente","");
+        String sql = "delete from cliente where id_cliente='"+id+"'";
+        return sql;
+    }
+    
+    public String editarSql(){
+        id = JOptionPane.showInputDialog("Dame la id del cliente","");
+        String sql = "update cliente set nombre='"+nombre+ "',ap_materno='"+apMat+"',ap_paterno='"+apPat+"',telefono='"+telefono+"',email='"+email+"',rfc='"+rfc+"',calle='"+calle+"',no='"+numero+"',colonia='"+colonia+"',ciudad='"+ciudad+"',estado='"+estado+"'where id_cliente='"+ id+"';";
+        return sql;
+    }
+    
 }
